@@ -8,6 +8,9 @@ import "@firebase/firestore";
 
 const db = firebase.firestore();
 
+
+// ADD DOCS
+
 /*db.collection("users").add({
   first: "Ada",
   last: "Lovelace",
@@ -20,6 +23,8 @@ const db = firebase.firestore();
   console.error("Error adding document: ", error);
 });*/
 
+//GET DOCS
+
 db.collection("users").get().then((querySnapshot) => {
   querySnapshot.forEach((doc) => {
       console.log(`${doc.id} => ${JSON.stringify(doc.data())}`);
@@ -27,9 +32,6 @@ db.collection("users").get().then((querySnapshot) => {
 });
 
 export default function App() {
-  const [clients, setClients] = useState(null);
-  const [name,setName] = useState(null);
-  const [phone,setPhone] = useState(null);
   return (
     <View style={styles.container}>     
       <Text>add users!</Text>
