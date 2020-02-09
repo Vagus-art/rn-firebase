@@ -6,44 +6,33 @@ import "@firebase/firestore";
 
 !firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app();
 
-const addUser = (user, phone) => {
-  const dbh = firebase.firestore();
-  dbh
-    .collection("users")
-    .add({
-      name: user,
-      phone: phone
-    })
-    .then(() => {
-      console.log("Document successfully written!");
-    })
-    .catch(error => {
-      console.error("Error writing document: ", error);
-    });
-};
+const db = firebase.firestore();
 
-const readUsers = async () => {
-  const dbh = firebase.firestore();
-  const docRef = await dbh.collection("users").get();
-  return docRef.data();
-};
+/*db.collection("users").add({
+  first: "Ada",
+  last: "Lovelace",
+  born: 1815
+})
+.then(function(docRef) {
+  console.log("Document written with ID: ", docRef.id);
+})
+.catch(function(error) {
+  console.error("Error adding document: ", error);
+});*/
+
+db.collection("users").get().then((querySnapshot) => {
+  querySnapshot.forEach((doc) => {
+      console.log(`${doc.id} => ${JSON.stringify(doc.data())}`);
+  });
+});
 
 export default function App() {
   const [clients, setClients] = useState(null);
   const [name,setName] = useState(null);
   const [phone,setPhone] = useState(null);
-
-  useEffect(() => {
-    setClients(readUsers);
-    alert(clients);
-  }, []);
   return (
     <View style={styles.container}>     
-      {clients && <Text>hola</Text>}
       <Text>add users!</Text>
-      <TextInput placeholder="username" onChangeText={text => setName(text)}></TextInput>
-      <TextInput placeholder="phone number" onChangeText={text => setPhone(text)}></TextInput>
-      <Button title="Add Client" onPress={()=>addUser(name,phone)}></Button>
     </View>
   );
 }
