@@ -12,7 +12,7 @@ const db = firebase.firestore();
 // ADD DOCS
 
 /*db.collection("users").add({
-  first: "Ada",
+  first: "asd",
   last: "Lovelace",
   born: 1815
 })
@@ -24,17 +24,30 @@ const db = firebase.firestore();
 });*/
 
 //GET DOCS
-
+/*
 db.collection("users").get().then((querySnapshot) => {
   querySnapshot.forEach((doc) => {
       console.log(`${doc.id} => ${JSON.stringify(doc.data())}`);
   });
-});
+});*/
 
+const getCollections = async () => {
+  const collection = await db.collection("users").get();
+  const awaited = collection.docs.map(doc=>({id:doc.id,data:doc.data()}));
+  return awaited;
+}
+console.log("asddasd");
 export default function App() {
+  const [collections,setCollections] = useState(null);
+  useEffect(()=>{
+    getCollections().then(data=>setCollections(data));
+    console.log(collections);
+  },[])
   return (
-    <View style={styles.container}>     
-      <Text>add users!</Text>
+    <View style={styles.container}>  
+    <Text>add asddasss sss!</Text> 
+    <Text>asda ssssd</Text>
+  {collections && collections.map(doc=><Text>{doc.id} | {doc.data.first}</Text>)}   
     </View>
   );
 }
