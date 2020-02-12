@@ -3,78 +3,84 @@ import { StyleSheet, Text, View, Button, TextInput } from "react-native";
 import * as firebase from "firebase";
 import firebaseConfig from "./firebaseConfig";
 import "@firebase/firestore";
+import { ListItem } from "react-native-elements";
 
 !firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app();
 
 const db = firebase.firestore();
 
-
-// ADD DOCS
-
-/*db.collection("users").add({
-  first: "asd",
-  last: "Lovelace",
-  born: 1815
-})
-.then(function(docRef) {
-  console.log("Document written with ID: ", docRef.id);
-})
-.catch(function(error) {
-  console.error("Error adding document: ", error);
-});*/
-
-//GET DOCS
-/*
-db.collection("users").get().then((querySnapshot) => {
-  querySnapshot.forEach((doc) => {
-      console.log(`${doc.id} => ${JSON.stringify(doc.data())}`);
-  });
-});*/
-
 const getCollections = async () => {
   const collection = await db.collection("users").get();
-  const awaited = collection.docs.map(doc=>({id:doc.id,data:doc.data()}));
+  const awaited = collection.docs.map(doc => ({
+    id: doc.id,
+    data: doc.data()
+  }));
   return awaited;
-}
+};
 
-const addItem = (first,last,born) => {
+const addItem = (first, last, born) => {
   db.collection("users").add({
-    first,last,born
-  })
-}
+    first,
+    last,
+    born
+  });
+};
 
-console.log("asddasd");
 export default function App() {
-  const [collections,setCollections] = useState(null);
-  const [inputs,setInput] = useState({
-    first: '',
-    last: '',
+  const [collections, setCollections] = useState(null);
+  const [inputs, setInput] = useState({
+    first: "",
+    last: "",
     born: 0
-  })
-  useEffect(()=>{
-    getCollections().then(data=>setCollections(data));
-    console.log(collections);
-  },[])
-  const onSubmit = () =>{
-    addItem(inputs.first,inputs.last,inputs.born);
-    getCollections().then(data=>setCollections(data))
-  }
+  });
+  useEffect(() => {
+    getCollections().then(data => setCollections(data));
+    //console.log(collections);
+  }, []);
+  const onSubmit = () => {
+    addItem(inputs.first, inputs.last, inputs.born);
+    getCollections().then(data => setCollections(data));
+  };
   return (
-    <View style={styles.container}>  
-    <TextInput placeholder="first" onChangeText={(text)=>setInput({...inputs,first:text})} />
-    <TextInput placeholder="last" onChangeText={(text)=>setInput({...inputs,last:text})} />
-    <TextInput placeholder="born" onChangeText={(text)=>setInput({...inputs,born:text})} />
-    <Button title="submit" onPress={()=>onSubmit()} />
-  {collections && collections.map(doc=><Text>{doc.id} | {doc.data.first}</Text>)}   
+    <View style={styles.main}>
+      {collections &&
+        collections.map(doc => (
+          <ListItem
+            title={doc.data.first + " " + doc.data.last}
+            rightTitle={doc.id}
+            subtitle={"born: " + doc.data.born}
+            onPress={() => alert("something")}
+            bottomDivider
+          />
+        ))}
+      <View style={styles.container}>
+        <TextInput
+          placeholder="first"
+          onChangeText={text => setInput({ ...inputs, first: text })}
+        />
+        <TextInput
+          placeholder="last"
+          onChangeText={text => setInput({ ...inputs, last: text })}
+        />
+        <TextInput
+          placeholder="born"
+          onChangeText={text => setInput({ ...inputs, born: text })}
+        />
+        <Button title="submit" onPress={() => onSubmit()} />
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  main: {
+    flex: 1,
+    backgroundColor: "#fff"
+  },
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    alignItems: "center"
   }
 });
