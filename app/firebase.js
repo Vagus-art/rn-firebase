@@ -1,6 +1,6 @@
 import * as firebase from "firebase";
 import firebaseConfig from "./firebaseConfig";
 
-!firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app();
+if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
 
 export default firebase.database();

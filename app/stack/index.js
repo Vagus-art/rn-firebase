@@ -3,6 +3,10 @@ import Users from "./Users";
 import AddUser from "./AddUser";
 import ViewUser from "./ViewUser";
 import { createAppContainer } from "react-navigation";
+// Before rendering any navigation stack
+import { enableScreens } from 'react-native-screens';
+enableScreens();
+
 
 const UserStack = createStackNavigator(
   {

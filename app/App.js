@@ -4,10 +4,6 @@ import { createStore, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
 import { promiseMiddleware } from "./redux-middleware";
 import firebase from "./firebase";
-// Before rendering any navigation stack
-import { enableScreens } from 'react-native-screens';
-enableScreens();
-
 
 
 const initialState = {

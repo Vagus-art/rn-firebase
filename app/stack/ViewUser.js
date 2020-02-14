@@ -2,9 +2,13 @@ import React, { useState } from "react";
 import { StyleSheet, View, Button, TouchableOpacity } from "react-native";
 import { Input } from "react-native-elements";
 import ActionButton from "../ActionButton";
+import firebase from "../firebase";
+
 
 const ViewUser = props => {
   const item = props.navigation.state.params.item;
+
+  const dbRef = firebase.ref('users/'+item.id+'/');
 
   const [inputs, setInput] = useState({
     ...item
@@ -18,14 +22,12 @@ const ViewUser = props => {
   };
 
   const onSubmit = () => {
-    modifyItem(item.id, inputs.first, inputs.last, inputs.born);
-    getCollections().then(data => props.getUsers(data));
+    dbRef.update({first:inputs.first,last:inputs.last,born:inputs.born});
     props.navigation.goBack();
   };
 
   const onDelete = async () => {
-    deleteItem(item.id);
-    getCollections().then(data => props.getUsers(data));
+    dbRef.remove();
     props.navigation.goBack();
   };
 
@@ -82,13 +84,6 @@ const ViewUser = props => {
           <Button
             title={"Borrar"}
             onPress={() => onDelete()}
-            style={{ flex: 1, height: 100 }}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity style={{ flex: 1, height: 100, padding: 10 }}>
-          <Button
-            title={"db"}
-            onPress={() => func()}
             style={{ flex: 1, height: 100 }}
           />
         </TouchableOpacity>
