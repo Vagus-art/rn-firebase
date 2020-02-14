@@ -1,28 +1,19 @@
 import React, { useState } from "react";
 import { StyleSheet, View, Button, TouchableOpacity } from "react-native";
-import { modifyItem, deleteItem } from "../firebaseActions";
-import { connect } from "react-redux";
-import { getCollections } from "../firebaseActions";
 import { Input } from "react-native-elements";
 import ActionButton from "../ActionButton";
-
-const mapDispatchToProps = dispatch => ({
-  getUsers: payload => dispatch({ type: "GET_USERS", payload })
-});
 
 const ViewUser = props => {
   const item = props.navigation.state.params.item;
 
-  const data = item.data;
-
   const [inputs, setInput] = useState({
-    ...data
+    ...item
   });
 
   const [editMode, toggleEdit] = useState(false);
 
   const toggleEditMode = () => {
-    editMode ? setInput({ ...data }) : null;
+    editMode ? setInput({ ...item }) : null;
     toggleEdit(!editMode);
   };
 
@@ -94,6 +85,13 @@ const ViewUser = props => {
             style={{ flex: 1, height: 100 }}
           />
         </TouchableOpacity>
+        <TouchableOpacity style={{ flex: 1, height: 100, padding: 10 }}>
+          <Button
+            title={"db"}
+            onPress={() => func()}
+            style={{ flex: 1, height: 100 }}
+          />
+        </TouchableOpacity>
       </View>
       {editMode && <ActionButton touch={() => onSubmit()} iconName="check" />}
     </View>
@@ -108,9 +106,6 @@ const styles = StyleSheet.create({
   }
 });
 
-const highestTimeoutId = setTimeout(() => ';');
-for (let i = 0; i < highestTimeoutId; i++) {
-    clearTimeout(i); 
-}
 
-export default connect(null, mapDispatchToProps)(ViewUser);
+
+export default ViewUser;
