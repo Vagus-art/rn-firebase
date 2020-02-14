@@ -1,24 +1,21 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Button, TextInput } from "react-native";
-import { addItem } from "../firebaseActions";
-import { connect } from "react-redux";
-import { getCollections } from "../firebaseActions";
+import { StyleSheet, View} from "react-native";
 import { Input } from "react-native-elements";
-
-const mapDispatchToProps = dispatch => ({
-  getUsers: payload => dispatch({ type: "GET_USERS", payload })
-});
+import firebase from "../firebase";
 
 const AddUser = props => {
   const [inputs, setInput] = useState({
-    first: "",
-    last: "",
-    born: 0
+    first: null,
+    last: null,
+    born: null
   });
   const onSubmit = () => {
-    addItem(inputs.first, inputs.last, inputs.born);
-    getCollections().then(data => props.getUsers(data));
+    if (inputs.first&&inputs.last&&inputs.born){
+    const key = firebase.ref('/users').push().key;
+    firebase.ref('users/'+key+'/').update({first:inputs.first,last:inputs.last,born:inputs.born,id:key});
     props.navigation.goBack();
+    }
+    else alert("Campos vacios, revise antes de confirmar.")
   };
   return (
     <View style={styles.container}>
@@ -62,4 +59,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default connect(null, mapDispatchToProps)(AddUser);
+export default AddUser;

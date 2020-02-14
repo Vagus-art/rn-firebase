@@ -1,40 +1,33 @@
 import React, { useState } from "react";
 import { StyleSheet, View, Button, TouchableOpacity } from "react-native";
-import { modifyItem, deleteItem } from "../firebaseActions";
-import { connect } from "react-redux";
-import { getCollections } from "../firebaseActions";
 import { Input } from "react-native-elements";
 import ActionButton from "../ActionButton";
+import firebase from "../firebase";
 
-const mapDispatchToProps = dispatch => ({
-  getUsers: payload => dispatch({ type: "GET_USERS", payload })
-});
 
 const ViewUser = props => {
   const item = props.navigation.state.params.item;
 
-  const data = item.data;
+  const dbRef = firebase.ref('users/'+item.id+'/');
 
   const [inputs, setInput] = useState({
-    ...data
+    ...item
   });
 
   const [editMode, toggleEdit] = useState(false);
 
   const toggleEditMode = () => {
-    editMode ? setInput({ ...data }) : null;
+    editMode ? setInput({ ...item }) : null;
     toggleEdit(!editMode);
   };
 
   const onSubmit = () => {
-    modifyItem(item.id, inputs.first, inputs.last, inputs.born);
-    getCollections().then(data => props.getUsers(data));
+    dbRef.update({first:inputs.first,last:inputs.last,born:inputs.born});
     props.navigation.goBack();
   };
 
   const onDelete = async () => {
-    deleteItem(item.id);
-    getCollections().then(data => props.getUsers(data));
+    dbRef.remove();
     props.navigation.goBack();
   };
 
@@ -108,9 +101,6 @@ const styles = StyleSheet.create({
   }
 });
 
-const highestTimeoutId = setTimeout(() => ';');
-for (let i = 0; i < highestTimeoutId; i++) {
-    clearTimeout(i); 
-}
 
-export default connect(null, mapDispatchToProps)(ViewUser);
+
+export default ViewUser;
