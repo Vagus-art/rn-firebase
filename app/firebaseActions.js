@@ -4,9 +4,10 @@ import "@firebase/firestore";
 
 !firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app();
 
-const db = firebase.firestore();
+
 
 export const getCollections = async () => {
+  const db = firebase.firestore();
   const collection = await db.collection("users").get();
   const awaited = collection.docs.map(doc => ({
     id: doc.id,
@@ -16,9 +17,25 @@ export const getCollections = async () => {
 };
 
 export const addItem = (first, last, born) => {
+  const db = firebase.firestore();
   db.collection("users").add({
     first,
     last,
     born
   });
 };
+
+export const modifyItem = (id, first, last, born) => {
+  const db = firebase.firestore();
+  db.collection("users").doc(id).set({
+    first,
+    last,
+    born
+  }, { merge: true });
+};
+
+export const deleteItem = (id) => {
+  const db = firebase.firestore();
+  db.collection("users").doc(id).delete();
+};
+

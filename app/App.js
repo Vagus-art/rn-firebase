@@ -19,6 +19,13 @@ const reducer = (state = initialState, action) => {
 
 const store = createStore(reducer, applyMiddleware(promiseMiddleware));
 
+console.disableYellowBox = true;
+
+const highestTimeoutId = setTimeout(() => ';');
+for (let i = 0; i < highestTimeoutId; i++) {
+    clearTimeout(i); 
+}
+
 export default function App() {
   return <Provider store={store}><Stack /></Provider>;
 }

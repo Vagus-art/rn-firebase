@@ -1,5 +1,5 @@
 import React from "react";
-import { TouchableOpacity, StyleSheet, View } from "react-native";
+import { TouchableOpacity, StyleSheet } from "react-native";
 import { Icon } from "react-native-elements";
 
 const styles = StyleSheet.create({
@@ -18,7 +18,7 @@ export default ActionButton = props => {
       onPress={props.touch}
     >
       <Icon
-        name="add"
+        name={props.iconName}
         reverseColor="#ffffff"
         color="#1858cd"
         size={35}

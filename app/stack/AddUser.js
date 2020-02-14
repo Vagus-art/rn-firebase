@@ -23,34 +23,33 @@ const AddUser = props => {
   return (
     <View style={styles.container}>
       <Input
-        label="First name"
-        placeholder="First"
-        leftIcon={{ name: "people" }}
-        containerStyle={{margin:20}}
-        leftIconContainerStyle={{marginLeft:5,marginRight:5}}
+        label="Nombre"
+        placeholder="..."
+        leftIcon={{ name: "person" }}
+        containerStyle={{ margin: 20 }}
+        leftIconContainerStyle={{ marginLeft: 5, marginRight: 5 }}
         onChangeText={text => setInput({ ...inputs, first: text })}
-       
       />
 
       <Input
-        label="Last name"
-        placeholder="Last"
-        leftIcon={{ name: "people" }}
-        containerStyle={{margin:20}}
-        leftIconContainerStyle={{marginLeft:5,marginRight:5}}
+        label="Dirección"
+        placeholder="..."
+        leftIcon={{ name: "directions-car" }}
+        containerStyle={{ margin: 20 }}
+        leftIconContainerStyle={{ marginLeft: 5, marginRight: 5 }}
         onChangeText={text => setInput({ ...inputs, last: text })}
       />
 
       <Input
-        label="Birth year"
-        placeholder="Born"
-        leftIcon={{ name: "people" }}
-        containerStyle={{margin:20}}
-        leftIconContainerStyle={{marginLeft:5,marginRight:5}}
+        label="Teléfono"
+        placeholder="..."
+        leftIcon={{ name: "phone" }}
+        containerStyle={{ margin: 20 }}
+        leftIconContainerStyle={{ marginLeft: 5, marginRight: 5 }}
         onChangeText={text => setInput({ ...inputs, born: text })}
       />
 
-      <Button title="submit" onPress={() => onSubmit()} />
+      <ActionButton touch={() => onSubmit()} iconName="check" />
     </View>
   );
 };

@@ -24,17 +24,17 @@ const Users = props => {
           data={props.users}
           renderItem={ ({item}) => (
             <ListItem
-              title={item.data.first + " " + item.data.last}
-              rightTitle={item.id}
+              title={item.data.first}
+              rightTitle={item.data.born}
               key={item.id}
-              subtitle={"born: " + item.data.born}
-              onPress={() => alert("something")}
+              subtitle={"Dirección: " + item.data.last}
+              onPress={() => props.navigation.push("ViewUser", {item:item})}
               bottomDivider
             />
           )}
         />
       )}
-      <ActionButton touch={() => props.navigation.push("AddUser")} />
+      <ActionButton touch={() => props.navigation.push("AddUser")} iconName="person-add"/>
     </View>
   );
 };
