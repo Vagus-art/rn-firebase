@@ -2,7 +2,7 @@ import { createStackNavigator } from "react-navigation-stack";
 import Users from "./Users";
 import AddUser from "./AddUser";
 import ViewUser from "./ViewUser";
-import { createAppContainer } from "react-navigation";
+import {withNavigation} from "../WithNavigationHOC";
 // Before rendering any navigation stack
 import { enableScreens } from 'react-native-screens';
 enableScreens();
@@ -11,7 +11,7 @@ enableScreens();
 const UserStack = createStackNavigator(
   {
     Users: {
-      screen: Users,
+      screen: withNavigation(Users),
       navigationOptions: {
         title: "Clientes"
       }
@@ -34,4 +34,4 @@ const UserStack = createStackNavigator(
   }
 );
 
-export default createAppContainer(UserStack);
+export default UserStack;

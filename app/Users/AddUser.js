@@ -9,7 +9,7 @@ const AddUser = props => {
     last: null,
     born: null
   });
-  const onSubmit = () => {
+  const onSubmit = async () => {
     if (inputs.first&&inputs.last&&inputs.born){
     const key = firebase.ref('/users').push().key;
     firebase.ref('users/'+key+'/').update({first:inputs.first,last:inputs.last,born:inputs.born,id:key});
