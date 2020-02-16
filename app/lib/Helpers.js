@@ -51,3 +51,28 @@ export const pushToCategory = (category, { name, quantity }) => {
     .ref("rnfirebase/stock/" + category + "/" + key)
     .update({ name, quantity, key });
 };
+
+export const pushToUsers = ({ first, last, born }) => {
+  const key = firebase
+    .database()
+    .ref("/rnfirebase/users/")
+    .push().key;
+  firebase
+    .database()
+    .ref("rnfirebase/users/" + key)
+    .update({ first, last, born, key });
+};
+
+export const updateUser = (key, {first,last,born}) => {
+    firebase
+    .database()
+    .ref("rnfirebase/users/" + key)
+    .update({ first, last, born});
+}
+
+export const deleteUser = (key) => {
+    firebase
+    .database()
+    .ref("rnfirebase/users/" + key)
+    .remove();
+}

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { StyleSheet, View, SectionList } from "react-native";
-import { CheckBox, Overlay, Input, ListItem, Divider } from "react-native-elements";
+import { Overlay, Input, ListItem, Divider } from "react-native-elements";
 import ActionButton from "../ActionButton";
 import { connect } from "react-redux";
 import { pushToCategory } from "../lib/Helpers";

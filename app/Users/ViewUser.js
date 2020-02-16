@@ -2,13 +2,12 @@ import React, { useState } from "react";
 import { StyleSheet, View, Button, TouchableOpacity } from "react-native";
 import { Input } from "react-native-elements";
 import ActionButton from "../ActionButton";
-//import firebase from "../firebase";
+import { updateUser, deleteUser } from "../lib/Helpers";
 
 
 const ViewUser = props => {
   const item = props.navigation.state.params.item;
 
-  const dbRef = firebase.ref('users/'+item.id+'/');
 
   const [inputs, setInput] = useState({
     ...item
@@ -22,12 +21,13 @@ const ViewUser = props => {
   };
 
   const onSubmit = () => {
-    //dbRef.update({first:inputs.first,last:inputs.last,born:inputs.born});
+    const {first,last,born} = inputs;
+    updateUser(item.key,{first,last,born});
     props.navigation.goBack();
   };
 
   const onDelete = async () => {
-    //dbRef.remove();
+    deleteUser(item.key)
     props.navigation.goBack();
   };
 
