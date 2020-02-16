@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { StyleSheet, View, Button, TouchableOpacity } from "react-native";
 import { Input } from "react-native-elements";
 import ActionButton from "../ActionButton";
-import firebase from "../firebase";
+//import firebase from "../firebase";
 
 
 const ViewUser = props => {
@@ -22,12 +22,12 @@ const ViewUser = props => {
   };
 
   const onSubmit = () => {
-    dbRef.update({first:inputs.first,last:inputs.last,born:inputs.born});
+    //dbRef.update({first:inputs.first,last:inputs.last,born:inputs.born});
     props.navigation.goBack();
   };
 
   const onDelete = async () => {
-    dbRef.remove();
+    //dbRef.remove();
     props.navigation.goBack();
   };
 

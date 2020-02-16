@@ -4,7 +4,7 @@ import Stock from "./Stock";
 import { createStore, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
 import { promiseMiddleware } from "./redux-middleware";
-import firebase from "./firebase";
+import { fetchDir, fetchStock } from "./lib/Helpers";
 import { createAppContainer } from "react-navigation";
 import { createDrawerNavigator } from "react-navigation-drawer";
 import { O2A, ReverseO2A } from "object-to-array-convert";
@@ -51,25 +51,15 @@ const store = createStore(reducer, applyMiddleware(promiseMiddleware));
 
 console.disableYellowBox = true;
 
-firebase.ref("/rnfirebase").on("value", snap => {
-  const arr = O2A(snap)
-  store.dispatch({
-    type: "GET_USERS",
-    payload: Object.values(snap.val().users)
-  });
-  store.dispatch({
-    type: "GET_STOCK",
-    payload: snap
-  });
-});
+fetchDir("/rnfirebase/users",(data)=>store.dispatch({
+  type: "GET_USERS",
+  payload: data
+}));
 
-firebase.ref("/rnfirebase/stock").on("value", snap => {
-  const arr = O2A(snap)
-  store.dispatch({
-    type: "GET_STOCK",
-    payload: arr
-  });
-});
+fetchStock("/rnfirebase/stock",(data)=>store.dispatch({
+  type: "GET_STOCK",
+  payload: data
+}));
 
 export default function App() {
   return (

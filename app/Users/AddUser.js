@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { StyleSheet, View} from "react-native";
 import { Input } from "react-native-elements";
-import firebase from "../firebase";
+//import firebase from "../firebase";
 
 const AddUser = props => {
   const [inputs, setInput] = useState({
@@ -11,9 +11,9 @@ const AddUser = props => {
   });
   const onSubmit = async () => {
     if (inputs.first&&inputs.last&&inputs.born){
-    const key = firebase.ref('/users').push().key;
+    /*const key = firebase.ref('/users').push().key;
     firebase.ref('users/'+key+'/').update({first:inputs.first,last:inputs.last,born:inputs.born,id:key});
-    props.navigation.goBack();
+    props.navigation.goBack();*/
     }
     else alert("Campos vacios, revise antes de confirmar.")
   };

@@ -1,14 +1,9 @@
 import React, { useState } from "react";
-import { StyleSheet, View, SectionList, Text } from "react-native";
-import {
-  CheckBox,
-  Overlay,
-  Input,
-  Button
-} from "react-native-elements";
+import { StyleSheet, View, SectionList } from "react-native";
+import { CheckBox, Overlay, Input, ListItem, Divider } from "react-native-elements";
 import ActionButton from "../ActionButton";
 import { connect } from "react-redux";
-import firebase from "../firebase";
+import { pushToCategory } from "../lib/Helpers";
 
 const mapStateToProps = state => ({
   stock: state.stock
@@ -17,28 +12,26 @@ const mapStateToProps = state => ({
 const Stock = props => {
   const [isVisible, toggleOverlay] = useState(false);
   const [category, setCategory] = useState(false);
-  const onSaveCategory = () => {
-    if (category) {
-      const key = firebase.ref("/users").push().key;
-      firebase
-        .ref("/rnfirebase/stock/" + key + "/")
-        .update({
-          categoryName: category,
-          id: key
-        });
-      props.navigation.goBack();
-    }
-    else alert("Escribe el nombre de la categoría")
-  };
+
   return (
     <View style={styles.main}>
-      <CheckBox
-        center
-        title="Agregar categoría"
-        iconLeft
-        uncheckedIcon="plus"
-        onPress={() => toggleOverlay(!isVisible)}
-      />
+      {
+        <SectionList
+          renderItem={({ item }) => (
+            <ListItem title={item.name} rightTitle={item.quantity} contentContainerStyle={{paddingLeft:20}}/>
+          )}
+          renderSectionHeader={({ section }) => (
+            <ListItem
+              title={section.title}
+              containerStyle={{ backgroundColor: "#d3d3d3" }}
+              onPress={() => toggleOverlay(!isVisible)}
+              bottomDivider
+            />
+          )}
+          sections={props.stock}
+          ItemSeparatorComponent={()=><Divider />}
+        />
+      }
       <Overlay
         overlayStyle={{
           alignItems: "center",
@@ -50,24 +43,18 @@ const Stock = props => {
         onBackdropPress={() => toggleOverlay(!isVisible)}
       >
         <Input
-          label="Agregar Categoría"
+          label="Agregar item"
           placeholder="Nombre"
           leftIcon={{ name: "list" }}
           containerStyle={{ margin: 20 }}
           leftIconContainerStyle={{ marginLeft: 5, marginRight: 5 }}
           onChangeText={text => setCategory(text)}
         />
-        <Button
-          icon={{
-            name: "check",
-            size: 15,
-            color: "white"
-          }}
-          title="Guardar"
-          onPress={() => onSaveCategory()}
-        />
       </Overlay>
-      <ActionButton touch={() => alert("something")} iconName="add" />
+      <ActionButton
+        touch={() => props.navigation.push("AddStock")}
+        iconName="add"
+      />
     </View>
   );
 };
