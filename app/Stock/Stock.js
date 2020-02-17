@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { StyleSheet, View, SectionList } from "react-native";
-import { ListItem, Divider } from "react-native-elements";
+import { ListItem, Divider, SearchBar } from "react-native-elements";
 import AddCategoryOverlay from "./AddCategoryOverlay";
 import AddItemOverlay from "./AddItemOverlay";
 import LongPressOverlayMenu from "./LongPressOverlayMenu";
 import ActionButton from "../ActionButton";
 import { connect } from "react-redux";
-import { pushToCategory, deleteCategory, createCategory } from "../lib/Helpers";
+import { pushToCategory, deleteCategory, deleteItem, createCategory } from "../lib/Helpers";
 
 const mapStateToProps = state => ({
   stock: state.stock
@@ -56,7 +56,7 @@ const Stock = props => {
     },
     {
       title: "Eliminar item",
-      function: () => alert("eliminar item")
+      function: () => deleteItem(currentOption.category,currentOption.key)
     }
   ];
 
@@ -69,6 +69,7 @@ const Stock = props => {
 
   return (
     <View style={styles.main}>
+      <SearchBar placeholder="Buscar..." lightTheme />
       {
         //mappeado de los items en secciones
         <SectionList
@@ -101,8 +102,6 @@ const Stock = props => {
       <AddCategoryOverlay
         isVisible={AddCategoryisVisible}
         toggle={toggleCategoryOverlay}
-        label="Agregar categoria"
-        placeholder="Nombre"
         function={createCategory}
       />
       {/* Menu de categorías */}

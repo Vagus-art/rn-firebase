@@ -15,8 +15,8 @@ export default AddCategoryOverlay = props => {
       onBackdropPress={() => props.toggle(!props.isVisible)}
     >
       <Input
-        label={props.label}
-        placeholder={props.placeholder}
+        label="Agregar categoria"
+        placeholder="Nombre"
         leftIcon={{ name: "list" }}
         containerStyle={{ margin: 20 }}
         leftIconContainerStyle={{ marginLeft: 5, marginRight: 5 }}

@@ -9,6 +9,7 @@ export const withNavigation = Component => {
       <Icon
         onPress={() => props.navigation.dispatch(DrawerActions.toggleDrawer())}
         name="menu"
+        size={30}
         iconStyle={{ paddingLeft: 20 }}
       />
     )

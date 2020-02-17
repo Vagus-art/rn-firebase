@@ -30,13 +30,18 @@ export const fetchStock = (dir, callback) => {
       let data = [];
       snap.forEach(item => {
         let category = [];
-
+        let categoryName = item.key;
         Object.values(item.val()).forEach(childitem => {
-          if (childitem.name!=="void"){
-          category.push({ name: childitem.name, quantity: childitem.quantity });
-        }
+          if (childitem.name !== "void") {
+            category.push({
+              name: childitem.name,
+              quantity: childitem.quantity,
+              category: categoryName,
+              key: childitem.key
+            });
+          }
         });
-        data.push({ title: item.key, data: category })
+        data.push({ title: categoryName, data: category });
       });
       callback(data);
     });
@@ -55,11 +60,12 @@ export const pushToCategory = (category, { name, quantity }) => {
 };
 
 //crea una categoria agregando un item vacio a la carpeta
-export const createCategory = (category) => {
+export const createCategory = category => {
   firebase
     .database()
-    .ref("/rnfirebase/stock/" + category).set({void:0})
-}
+    .ref("/rnfirebase/stock/" + category)
+    .set({ void: 0 });
+};
 //agrega un usuario
 export const pushToUsers = ({ first, last, born }) => {
   const key = firebase
@@ -72,23 +78,30 @@ export const pushToUsers = ({ first, last, born }) => {
     .update({ first, last, born, key });
 };
 
-export const updateUser = (key, {first,last,born}) => {
-    firebase
+export const updateUser = (key, { first, last, born }) => {
+  firebase
     .database()
     .ref("rnfirebase/users/" + key)
-    .update({ first, last, born});
-}
+    .update({ first, last, born });
+};
 
-export const deleteUser = (key) => {
-    firebase
+export const deleteUser = key => {
+  firebase
     .database()
     .ref("rnfirebase/users/" + key)
     .remove();
-}
+};
 
-export const deleteCategory = (category) => {
+export const deleteItem = (category, key) => {
   firebase
-  .database()
-  .ref("rnfirebase/stock/" + category)
-  .remove();
-}
+    .database()
+    .ref("rnfirebase/stock/" + category + "/" + key)
+    .remove();
+};
+
+export const deleteCategory = category => {
+  firebase
+    .database()
+    .ref("rnfirebase/stock/" + category)
+    .remove();
+};
