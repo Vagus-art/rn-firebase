@@ -32,15 +32,17 @@ export const fetchStock = (dir, callback) => {
         let category = [];
 
         Object.values(item.val()).forEach(childitem => {
+          if (childitem.name!=="void"){
           category.push({ name: childitem.name, quantity: childitem.quantity });
+        }
         });
-
-        data.push({ title: item.key, data: category });
+        data.push({ title: item.key, data: category })
       });
       callback(data);
     });
 };
 
+//agrega items del stock a una categoría
 export const pushToCategory = (category, { name, quantity }) => {
   const key = firebase
     .database()
@@ -52,6 +54,13 @@ export const pushToCategory = (category, { name, quantity }) => {
     .update({ name, quantity, key });
 };
 
+//crea una categoria agregando un item vacio a la carpeta
+export const createCategory = (category) => {
+  firebase
+    .database()
+    .ref("/rnfirebase/stock/" + category).set({void:0})
+}
+//agrega un usuario
 export const pushToUsers = ({ first, last, born }) => {
   const key = firebase
     .database()
@@ -75,4 +84,11 @@ export const deleteUser = (key) => {
     .database()
     .ref("rnfirebase/users/" + key)
     .remove();
+}
+
+export const deleteCategory = (category) => {
+  firebase
+  .database()
+  .ref("rnfirebase/stock/" + category)
+  .remove();
 }
