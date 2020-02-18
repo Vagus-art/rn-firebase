@@ -115,11 +115,16 @@ export const deleteCategory = category => {
 
 export const renameCategory = (category, renamedCategory) => {
   const callbackActions = snap => {
-    firebase
-      .database()
-      .ref("rnfirebase/stock/" + renamedCategory)
-      .update({ ...snap });
+    snap.forEach(child => {
+      firebase
+        .database()
+        .ref("rnfirebase/stock/" + renamedCategory + "/" + child.key)
+        .set({ ...child });
+    });
     deleteCategory(category);
   };
-  fetchDir("rnfirebase/stock/" + category, callbackActions);
+  firebase
+    .database()
+    .ref("rnfirebase/stock/" + category)
+    .once("value", snap => callbackActions(Object.values(snap.val())));
 };
