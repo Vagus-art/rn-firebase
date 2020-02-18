@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { Overlay, Input, Button } from "react-native-elements";
 
 export default AddItemOverlay = props => {
-  const [name,setName] = useState(null);
-  const [quantity,setQuantity] = useState(null);
+  const [name, setName] = useState(null);
+  const [quantity, setQuantity] = useState(null);
 
   return (
     <Overlay
@@ -17,7 +17,7 @@ export default AddItemOverlay = props => {
       onBackdropPress={() => props.toggle(!props.isVisible)}
     >
       <Input
-        label="Agregar item"
+        label={props.nameLabel}
         placeholder="Nombre"
         leftIcon={{ name: "list" }}
         containerStyle={{ margin: 20 }}
@@ -25,14 +25,20 @@ export default AddItemOverlay = props => {
         onChangeText={text => setName(text)}
       />
       <Input
-        label="Cantidad"
+        label={props.quantityLabel}
         placeholder="..."
         leftIcon={{ name: "list" }}
         containerStyle={{ margin: 20 }}
         leftIconContainerStyle={{ marginLeft: 5, marginRight: 5 }}
         onChangeText={text => setQuantity(text)}
       />
-      <Button title="Guardar" onPress={()=>{props.toggle(!props.isVisible);props.function({name,quantity})}} />
+      <Button
+        title="Guardar"
+        onPress={() => {
+          props.toggle(!props.isVisible);
+          props.function({ name, quantity });
+        }}
+      />
     </Overlay>
   );
 };

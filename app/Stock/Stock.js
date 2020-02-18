@@ -1,19 +1,28 @@
 import React, { useState } from "react";
 import { StyleSheet, View, SectionList } from "react-native";
 import { ListItem, Divider, SearchBar } from "react-native-elements";
-import AddCategoryOverlay from "./AddCategoryOverlay";
-import AddItemOverlay from "./AddItemOverlay";
+import CategoryOverlay from "./AddCategoryOverlay";
+import ItemOverlay from "./AddItemOverlay";
 import LongPressOverlayMenu from "./LongPressOverlayMenu";
 import ActionButton from "../ActionButton";
 import { connect } from "react-redux";
-import { pushToCategory, deleteCategory, deleteItem, createCategory } from "../lib/Helpers";
+import {
+  pushToCategory,
+  deleteCategory,
+  deleteItem,
+  updateItem,
+  createCategory
+} from "../lib/Helpers";
 
 const mapStateToProps = state => ({
   stock: state.stock
 });
 
 const Stock = props => {
+  const [search, setSearch] = useState(null);
+  //const [filteredStock, setFilteredStock] = useState(props.stock);
   const [AddItemisVisible, toggleItemOverlay] = useState(false);
+  const [modifyItemisVisible, toggleModifyItemOverlay] = useState(false);
   const [AddCategoryisVisible, toggleCategoryOverlay] = useState(false);
   const [categoryLongPress, toggleCategoryLongPress] = useState(false);
   const [itemLongPress, toggleItemLongPress] = useState(false);
@@ -34,7 +43,7 @@ const Stock = props => {
   const categoryMenu = [
     {
       title: "Agregar item",
-      function: () => toggleItemOverlay(!AddItemisVisible),
+      function: () => toggleItemOverlay(!AddItemisVisible)
     },
     {
       title: "Cambiar nombre",
@@ -42,51 +51,73 @@ const Stock = props => {
     },
     {
       title: "Eliminar categoría",
-      function: ({title})=>deleteCategory(title)
-    }   
+      function: ({ title }) => deleteCategory(title)
+    }
   ];
   const itemMenu = [
     {
-      title: "Cambiar nombre",
-      function: () => alert(JSON.stringify(currentOption))
-    },
-    {
-      title: "Cambiar stock",
-      function: () => alert("cambiar stock")
+      title: "Modificar",
+      function: () => toggleModifyItemOverlay(!modifyItemisVisible)
     },
     {
       title: "Eliminar item",
-      function: () => deleteItem(currentOption.category,currentOption.key)
+      function: () => deleteItem(currentOption.category, currentOption.key)
     }
   ];
 
   //agrega un item a la categoría que presionaste (sacada de currentoption)
 
-  const addItem = (item) => {
+  const addItem = item => {
     const category = currentOption.title;
-    pushToCategory(category,item);
-  }
+    pushToCategory(category, item);
+  };
+
+  const modifyItem = item => {
+    const category = currentOption.category;
+    const key = currentOption.key;
+    updateItem(category, key, item);
+  };
+
+  const updateSearch = search => {
+    setSearch(search);
+  };
 
   return (
     <View style={styles.main}>
-      <SearchBar placeholder="Buscar..." lightTheme />
+      <SearchBar
+        value={search}
+        onChangeText={text => updateSearch(text)}
+        placeholder="Buscar..."
+        lightTheme
+      />
       {
         //mappeado de los items en secciones
         <SectionList
-          renderItem={({ item }) => item.name?
-            <ListItem
-              title={item.name}
-              rightTitle={item.quantity}
-              contentContainerStyle={{ paddingLeft: 20 }}
-              onLongPress={() => {setCurrentOption(item);toggleItemLongPress(!itemLongPress)}}
-            /> : null
+          renderItem={({ item }) =>
+            item.name ? (
+              <ListItem
+                title={item.name}
+                rightTitle={item.quantity}
+                contentContainerStyle={{ paddingLeft: 20 }}
+                onLongPress={() => {
+                  setCurrentOption(item);
+                  toggleItemLongPress(!itemLongPress);
+                }}
+              />
+            ) : null
           }
           renderSectionHeader={({ section }) => (
             <ListItem
               title={section.title}
               containerStyle={{ backgroundColor: "#d3d3d3" }}
-              onPress={() => {setCurrentOption(section);toggleItemOverlay(!AddItemisVisible)}}
-              onLongPress={() => {setCurrentOption(section);toggleCategoryLongPress(!categoryLongPress)}}
+              onPress={() => {
+                setCurrentOption(section);
+                toggleItemOverlay(!AddItemisVisible);
+              }}
+              onLongPress={() => {
+                setCurrentOption(section);
+                toggleCategoryLongPress(!categoryLongPress);
+              }}
               bottomDivider
             />
           )}
@@ -94,12 +125,22 @@ const Stock = props => {
           ItemSeparatorComponent={() => <Divider />}
         />
       }
-      <AddItemOverlay
+      <ItemOverlay
+        nameLabel="Agregar item"
+        quantityLabel="Cantidad"
         isVisible={AddItemisVisible}
         toggle={toggleItemOverlay}
         function={addItem}
       />
-      <AddCategoryOverlay
+      <ItemOverlay
+        nameLabel="Nuevo nombre"
+        option={currentOption}
+        quantityLabel="Cantidad"
+        isVisible={modifyItemisVisible}
+        toggle={toggleModifyItemOverlay}
+        function={modifyItem}
+      />
+      <CategoryOverlay
         isVisible={AddCategoryisVisible}
         toggle={toggleCategoryOverlay}
         function={createCategory}

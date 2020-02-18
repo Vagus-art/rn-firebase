@@ -99,6 +99,13 @@ export const deleteItem = (category, key) => {
     .remove();
 };
 
+export const updateItem = (category, key, { name, quantity }) => {
+  firebase
+    .database()
+    .ref("rnfirebase/stock/" + category + "/" + key)
+    .update({ name, quantity });
+};
+
 export const deleteCategory = category => {
   firebase
     .database()
