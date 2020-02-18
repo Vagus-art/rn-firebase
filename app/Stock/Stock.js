@@ -11,7 +11,8 @@ import {
   deleteCategory,
   deleteItem,
   updateItem,
-  createCategory
+  createCategory,
+  renameCategory
 } from "../lib/Helpers";
 
 const mapStateToProps = state => ({
@@ -21,9 +22,18 @@ const mapStateToProps = state => ({
 const Stock = props => {
   const [search, setSearch] = useState(null);
   //const [filteredStock, setFilteredStock] = useState(props.stock);
+
+  //add item/ category menu visibility
   const [AddItemisVisible, toggleItemOverlay] = useState(false);
   const [modifyItemisVisible, toggleModifyItemOverlay] = useState(false);
+
+  //modify item/ category menu visibility
   const [AddCategoryisVisible, toggleCategoryOverlay] = useState(false);
+  const [modifyCategoryisVisible, toggleModifyCategoryOverlay] = useState(
+    false
+  );
+
+  //self explanatory
   const [categoryLongPress, toggleCategoryLongPress] = useState(false);
   const [itemLongPress, toggleItemLongPress] = useState(false);
 
@@ -47,7 +57,7 @@ const Stock = props => {
     },
     {
       title: "Cambiar nombre",
-      function: () => alert(JSON.stringify(currentOption))
+      function: () => toggleModifyCategoryOverlay(!modifyCategoryisVisible)
     },
     {
       title: "Eliminar categoría",
@@ -65,11 +75,23 @@ const Stock = props => {
     }
   ];
 
-  //agrega un item a la categoría que presionaste (sacada de currentoption)
+  //estas funciones son las que ejecutan los overlays, son funciones de un rango mas alto para que desde los
+  //componentes overlay solo se necesite pasar los estados como argumento, haciendo que sean componentes reusables
+  //para tanto creacion como modificacion
+
+  //currentOption es un estado que guarda el item que presionaste, asi sacando la informacion necesaria
+  //para actualizar el elemento especifico en la base de datos
+  //las categorias y los items tienen diferentes propiedades, eso se tiene en cuenta implicitamente
+  //en las funciones
 
   const addItem = item => {
     const category = currentOption.title;
     pushToCategory(category, item);
+  };
+
+  const modifyCategory = renamedCategory => {
+    const category = currentOption.title;
+    renameCategory(category, renamedCategory);
   };
 
   const modifyItem = item => {
@@ -141,9 +163,16 @@ const Stock = props => {
         function={modifyItem}
       />
       <CategoryOverlay
+        label="Agregar categoría"
         isVisible={AddCategoryisVisible}
         toggle={toggleCategoryOverlay}
         function={createCategory}
+      />
+      <CategoryOverlay
+        label="Renombrar categoría"
+        isVisible={modifyCategoryisVisible}
+        toggle={toggleModifyCategoryOverlay}
+        function={modifyCategory}
       />
       {/* Menu de categorías */}
       <LongPressOverlayMenu

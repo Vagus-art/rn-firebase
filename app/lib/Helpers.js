@@ -112,3 +112,14 @@ export const deleteCategory = category => {
     .ref("rnfirebase/stock/" + category)
     .remove();
 };
+
+export const renameCategory = (category, renamedCategory) => {
+  const callbackActions = snap => {
+    firebase
+      .database()
+      .ref("rnfirebase/stock/" + renamedCategory)
+      .update({ ...snap });
+    deleteCategory(category);
+  };
+  fetchDir("rnfirebase/stock/" + category, callbackActions);
+};
