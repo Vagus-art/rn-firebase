@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { StyleSheet, View, SectionList } from "react-native";
 import { ListItem, Divider, SearchBar } from "react-native-elements";
-import CategoryOverlay from "./AddCategoryOverlay";
-import ItemOverlay from "./AddItemOverlay";
+import CategoryOverlay from "./CategoryOverlay";
+import ItemOverlay from "./ItemOverlay";
 import LongPressOverlayMenu from "./LongPressOverlayMenu";
 import ActionButton from "../ActionButton";
 import { connect } from "react-redux";
@@ -12,7 +12,8 @@ import {
   deleteItem,
   updateItem,
   createCategory,
-  renameCategory
+  renameCategory,
+  insertToCategory
 } from "../lib/Helpers";
 
 const mapStateToProps = state => ({
@@ -26,6 +27,10 @@ const Stock = props => {
   //add item/ category menu visibility
   const [AddItemisVisible, toggleItemOverlay] = useState(false);
   const [modifyItemisVisible, toggleModifyItemOverlay] = useState(false);
+  const [modifyItemCategoryisVisible, toggleModifyItemCategoryOverlay] = useState(
+    false
+  );
+
 
   //modify item/ category menu visibility
   const [AddCategoryisVisible, toggleCategoryOverlay] = useState(false);
@@ -70,6 +75,10 @@ const Stock = props => {
       function: () => toggleModifyItemOverlay(!modifyItemisVisible)
     },
     {
+      title: "Mover a otra categoría",
+      function: () => toggleModifyItemCategoryOverlay(!modifyItemCategoryisVisible)
+    },
+    {
       title: "Eliminar item",
       function: () => deleteItem(currentOption.category, currentOption.key)
     }
@@ -99,6 +108,13 @@ const Stock = props => {
     const key = currentOption.key;
     updateItem(category, key, item);
   };
+
+  const moveToCategory = destiny => {
+    const oldCategory = currentOption.category;
+    const {key, name, quantity} = currentOption;
+    insertToCategory(destiny,{ key, name, quantity });
+    deleteItem(oldCategory,key);
+  }
 
   const updateSearch = search => {
     setSearch(search);
@@ -173,6 +189,12 @@ const Stock = props => {
         isVisible={modifyCategoryisVisible}
         toggle={toggleModifyCategoryOverlay}
         function={modifyCategory}
+      />
+      <CategoryOverlay
+        label="Categoría destino"
+        isVisible={modifyItemCategoryisVisible}
+        toggle={toggleModifyItemCategoryOverlay}
+        function={moveToCategory}
       />
       {/* Menu de categorías */}
       <LongPressOverlayMenu

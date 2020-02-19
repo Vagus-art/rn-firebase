@@ -59,6 +59,14 @@ export const pushToCategory = (category, { name, quantity }) => {
     .update({ name, quantity, key });
 };
 
+//inserta item existente a una categoría
+export const insertToCategory = (category, { name, quantity, key }) => {
+  firebase
+    .database()
+    .ref("/rnfirebase/stock/" + category + "/" + key)
+    .set({ name, quantity, key });
+};
+
 //crea una categoria agregando un item vacio a la carpeta
 export const createCategory = category => {
   firebase
