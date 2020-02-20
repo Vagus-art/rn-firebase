@@ -1,13 +1,13 @@
 import React from "react";
 import Users from "./Users/";
-import Stock from "./Stock";
+import Stock from "./Stock/";
+import Balance from "./Balance/";
 import { createStore, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
 import { promiseMiddleware } from "./redux-middleware";
 import { fetchDir, fetchStock } from "./lib/Helpers";
 import { createAppContainer } from "react-navigation";
 import { createDrawerNavigator } from "react-navigation-drawer";
-import { O2A, ReverseO2A } from "object-to-array-convert";
 
 const DrawerNavigator = createDrawerNavigator(
   {
@@ -21,6 +21,12 @@ const DrawerNavigator = createDrawerNavigator(
       screen: Stock,
       navigationOptions: {
         title: "Stock"
+      }
+    },
+    Balance: {
+      screen: Balance,
+      navigationOptions: {
+        title: "Balance"
       }
     }
   },
