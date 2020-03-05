@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { StyleSheet, View, SectionList } from "react-native";
 import { ListItem, Divider, SearchBar } from "react-native-elements";
-import CategoryOverlay from "../UI/CategoryOverlay";
-import ItemOverlay from "../UI/ItemOverlay";
-import LongPressOverlayMenu from "../UI/LongPressOverlayMenu";
-import ActionButton from "../ActionButton";
+import CategoryOverlay from "../../UI/CategoryOverlay";
+import ItemOverlay from "../../UI/ItemOverlay";
+import LongPressOverlayMenu from "../../UI/LongPressOverlayMenu";
+import ActionButton from "../../UI/ActionButton";
 import { connect } from "react-redux";
 import {
   pushToCategory,
@@ -14,7 +14,7 @@ import {
   createCategory,
   renameCategory,
   insertToCategory
-} from "../lib/Helpers";
+} from "../../lib/Helpers";
 
 const mapStateToProps = state => ({
   stock: state.stock
@@ -22,6 +22,11 @@ const mapStateToProps = state => ({
 
 const Stock = props => {
   const [search, setSearch] = useState(null);
+
+  const updateSearch = search => {
+    setSearch(search);
+  };
+  
   //const [filteredStock, setFilteredStock] = useState(props.stock);
 
   //add item/ category menu visibility
@@ -116,9 +121,7 @@ const Stock = props => {
     deleteItem(oldCategory,key);
   }
 
-  const updateSearch = search => {
-    setSearch(search);
-  };
+  
 
   return (
     <View style={styles.main}>
@@ -158,6 +161,7 @@ const Stock = props => {
                 toggleCategoryLongPress(!categoryLongPress);
               }}
               bottomDivider
+              topDivider
             />
           )}
           sections={props.stock}

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Overlay, Input, Button } from "react-native-elements";
 
-export default AddItemOverlay = props => {
+export default ItemOverlay = props => {
   const [name, setName] = useState(null);
   const [quantity, setQuantity] = useState(null);
 

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { StyleSheet, View, Button, TouchableOpacity } from "react-native";
 import { Input } from "react-native-elements";
-import ActionButton from "../ActionButton";
-import { updateUser, deleteUser } from "../lib/Helpers";
+import ActionButton from "../../../UI/ActionButton";
+import { updateUser, deleteUser } from "../../../lib/Helpers";
 
 
 const ViewUser = props => {

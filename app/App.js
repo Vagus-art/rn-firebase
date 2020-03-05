@@ -1,38 +1,43 @@
 import React from "react";
-import Users from "./Users/";
-import Stock from "./Stock/";
-import Balance from "./Balance/";
-import Trades from "./Trades/";
+import Users from "./screens/Users/";
+import Stock from "./screens/Stock/";
+import Balance from "./screens/Balance/";
+import Trades from "./screens/Trades/";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
 import { fetchDir, fetchStock } from "./lib/Helpers";
 import { createAppContainer } from "react-navigation";
 import { createDrawerNavigator } from "react-navigation-drawer";
+import { Icon } from "react-native-elements";
 
 const DrawerNavigator = createDrawerNavigator(
   {
     Trades: {
       screen: Trades,
       navigationOptions: {
-        title: "Intercambios"
+        title: "Intercambios",
+        drawerIcon: ({tintColor}) => (<Icon name="swap-vert" color={tintColor} />)
       }
     },
     Users: {
       screen: Users,
       navigationOptions: {
-        title: "Clientes"
+        title: "Clientes",
+        drawerIcon: ({tintColor}) => (<Icon name="people" color={tintColor} />)
       }
     },
     Stock: {
       screen: Stock,
       navigationOptions: {
-        title: "Stock"
+        title: "Stock",
+        drawerIcon: ({tintColor}) => (<Icon name="book" color={tintColor} />)
       }
     },
     Balance: {
       screen: Balance,
       navigationOptions: {
-        title: "Balance"
+        title: "Balance",
+        drawerIcon: ({tintColor}) => (<Icon name="account-balance" color={tintColor} />)
       }
     }
   },

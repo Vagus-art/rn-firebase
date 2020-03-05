@@ -1,11 +1,8 @@
 import { createStackNavigator } from "react-navigation-stack";
 import Users from "./Users";
-import AddUser from "./AddUser";
-import ViewUser from "./ViewUser";
-import {withNavigation} from "../UI/WithNavigationHOC";
-// Before rendering any navigation stack
-import { enableScreens } from 'react-native-screens';
-enableScreens();
+import AddUser from "./innerstack/AddUser";
+import ViewUser from "./innerstack/ViewUser";
+import {withNavigation} from "../../UI/WithNavigationHOC";
 
 
 const UserStack = createStackNavigator(

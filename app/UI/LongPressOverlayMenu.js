@@ -1,6 +1,6 @@
 import React from "react";
 import { View } from "react-native";
-import { Overlay, Button, ListItem } from "react-native-elements";
+import { Overlay, ListItem } from "react-native-elements";
 
 export default LongPressOverlayMenu = props => {
   return (

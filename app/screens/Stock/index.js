@@ -1,6 +1,6 @@
 import { createStackNavigator } from "react-navigation-stack";
 import Stock from "./Stock";
-import { withNavigation } from "../UI/WithNavigationHOC";
+import { withNavigation } from "../../UI/WithNavigationHOC";
 // Before rendering any navigation stack
 import { enableScreens } from "react-native-screens";
 enableScreens();

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Overlay, Input, Button } from "react-native-elements";
 
-export default AddCategoryOverlay = props => {
+export default CategoryOverlay = props => {
   const [input, setInput] = useState(null);
   return (
     <Overlay

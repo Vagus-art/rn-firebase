@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Input } from "react-native-elements";
-import { pushToUsers } from "../lib/Helpers";
+import { pushToUsers } from "../../../lib/Helpers";
 
 const AddUser = props => {
   const [inputs, setInput] = useState({
