@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { StyleSheet, View, SectionList } from "react-native";
 import { ListItem, Divider, SearchBar } from "react-native-elements";
-import CategoryOverlay from "./CategoryOverlay";
-import ItemOverlay from "./ItemOverlay";
-import LongPressOverlayMenu from "./LongPressOverlayMenu";
+import CategoryOverlay from "../UI/CategoryOverlay";
+import ItemOverlay from "../UI/ItemOverlay";
+import LongPressOverlayMenu from "../UI/LongPressOverlayMenu";
 import ActionButton from "../ActionButton";
 import { connect } from "react-redux";
 import {
@@ -122,6 +122,7 @@ const Stock = props => {
 
   return (
     <View style={styles.main}>
+      {/* Barra de busqueda, aun no funciona */}
       <SearchBar
         value={search}
         onChangeText={text => updateSearch(text)}
@@ -163,13 +164,56 @@ const Stock = props => {
           ItemSeparatorComponent={() => <Divider />}
         />
       }
+
+      {/* ACTION BUTTON QUE AGREGA CATEGORÍAS */}
+      <ActionButton
+        touch={() => toggleCategoryOverlay(!AddCategoryisVisible)}
+        iconName="add"
+      />
+      {/* MENU DEL ACTION BUTTON */}
+      {/* Agregar categoría */}
+      <CategoryOverlay
+        label="Agregar categoría"
+        isVisible={AddCategoryisVisible}
+        toggle={toggleCategoryOverlay}
+        function={createCategory}
+      />
+
+      {/* MENU LONGPRESS DE CATEGORíAS */}
+      <LongPressOverlayMenu
+        isVisible={categoryLongPress}
+        toggle={toggleCategoryLongPress}
+        menuData={categoryMenu}
+        option={currentOption}
+      />
+
+      {/* OPCIONES DEL MENU LONGPRESS DE CATEGORÍA */}
+      {/* Agregar item a categoría */}
       <ItemOverlay
         nameLabel="Agregar item"
         quantityLabel="Cantidad"
         isVisible={AddItemisVisible}
         toggle={toggleItemOverlay}
         function={addItem}
+      />  
+      {/* Renombrar categoría */}
+      <CategoryOverlay
+        label="Renombrar categoría"
+        isVisible={modifyCategoryisVisible}
+        toggle={toggleModifyCategoryOverlay}
+        function={modifyCategory}
       />
+
+      {/* MENU LONGPRESS DE ITEMS */}
+      <LongPressOverlayMenu
+        isVisible={itemLongPress}
+        toggle={toggleItemLongPress}
+        menuData={itemMenu}
+        option={currentOption}
+      />
+      
+      {/* OPCIONES DEL MENU LONGPRESS DE ITEMS */}
+      {/* Modificar item */}
       <ItemOverlay
         nameLabel="Nuevo nombre"
         option={currentOption}
@@ -178,43 +222,14 @@ const Stock = props => {
         toggle={toggleModifyItemOverlay}
         function={modifyItem}
       />
-      <CategoryOverlay
-        label="Agregar categoría"
-        isVisible={AddCategoryisVisible}
-        toggle={toggleCategoryOverlay}
-        function={createCategory}
-      />
-      <CategoryOverlay
-        label="Renombrar categoría"
-        isVisible={modifyCategoryisVisible}
-        toggle={toggleModifyCategoryOverlay}
-        function={modifyCategory}
-      />
+      {/* Cambiar categoría de item */}
       <CategoryOverlay
         label="Categoría destino"
         isVisible={modifyItemCategoryisVisible}
         toggle={toggleModifyItemCategoryOverlay}
         function={moveToCategory}
       />
-      {/* Menu de categorías */}
-      <LongPressOverlayMenu
-        isVisible={categoryLongPress}
-        toggle={toggleCategoryLongPress}
-        menuData={categoryMenu}
-        option={currentOption}
-      />
-      {/* Menu de items */}
-      <LongPressOverlayMenu
-        isVisible={itemLongPress}
-        toggle={toggleItemLongPress}
-        menuData={itemMenu}
-        option={currentOption}
-      />
-      {/* Este ActionButton sirve para agregar categorías a la lista */}
-      <ActionButton
-        touch={() => toggleCategoryOverlay(!AddCategoryisVisible)}
-        iconName="add"
-      />
+      
     </View>
   );
 };
