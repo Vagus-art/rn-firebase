@@ -1,23 +1,23 @@
 import { createStackNavigator } from "react-navigation-stack";
-import Balance from "./Balance";
+import Trades from "./Trades";
 import {withNavigation} from "../UI/WithNavigationHOC";
 // Before rendering any navigation stack
 import { enableScreens } from 'react-native-screens';
 enableScreens();
 
 
-const BalanceStack = createStackNavigator(
+const TradesStack = createStackNavigator(
   {
-    Balance: {
-      screen: withNavigation(Balance),
+    Trades: {
+      screen: withNavigation(Trades),
       navigationOptions: {
-        title: "Balance"
+        title: "Intercambios"
       }
     }
   },
   {
-    initialRouteName: "Balance"
+    initialRouteName: "Trades"
   }
 );
 
-export default BalanceStack;
+export default TradesStack;

@@ -2,15 +2,21 @@ import React from "react";
 import Users from "./Users/";
 import Stock from "./Stock/";
 import Balance from "./Balance/";
-import { createStore, applyMiddleware } from "redux";
+import Trades from "./Trades/";
+import { createStore } from "redux";
 import { Provider } from "react-redux";
-import { promiseMiddleware } from "./redux-middleware";
 import { fetchDir, fetchStock } from "./lib/Helpers";
 import { createAppContainer } from "react-navigation";
 import { createDrawerNavigator } from "react-navigation-drawer";
 
 const DrawerNavigator = createDrawerNavigator(
   {
+    Trades: {
+      screen: Trades,
+      navigationOptions: {
+        title: "Intercambios"
+      }
+    },
     Users: {
       screen: Users,
       navigationOptions: {
@@ -53,7 +59,7 @@ const reducer = (state = initialState, action) => {
   }
 };
 
-const store = createStore(reducer, applyMiddleware(promiseMiddleware));
+const store = createStore(reducer);
 
 console.disableYellowBox = true;
 
