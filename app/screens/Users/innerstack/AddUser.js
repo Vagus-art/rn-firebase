@@ -5,14 +5,14 @@ import { pushToUsers } from "../../../lib/Helpers";
 
 const AddUser = props => {
   const [inputs, setInput] = useState({
-    first: null,
-    last: null,
-    born: null
+    name: null,
+    adress: null,
+    phone: null
   });
   const onSubmit = async () => {
-    if (inputs.first && inputs.last && inputs.born) {
-      const { first, last, born } = inputs;
-      pushToUsers({ first, last, born });
+    if (inputs.name && inputs.adress && inputs.phone) {
+      const { name, adress, phone } = inputs;
+      pushToUsers({ name, adress, phone });
       props.navigation.goBack();
     } else alert("Campos vacios, revise antes de confirmar.");
   };
@@ -24,7 +24,7 @@ const AddUser = props => {
         leftIcon={{ name: "person" }}
         containerStyle={{ margin: 20 }}
         leftIconContainerStyle={{ marginLeft: 5, marginRight: 5 }}
-        onChangeText={text => setInput({ ...inputs, first: text })}
+        onChangeText={text => setInput({ ...inputs, name: text })}
       />
 
       <Input
@@ -33,7 +33,7 @@ const AddUser = props => {
         leftIcon={{ name: "directions-car" }}
         containerStyle={{ margin: 20 }}
         leftIconContainerStyle={{ marginLeft: 5, marginRight: 5 }}
-        onChangeText={text => setInput({ ...inputs, last: text })}
+        onChangeText={text => setInput({ ...inputs, adress: text })}
       />
 
       <Input
@@ -42,7 +42,7 @@ const AddUser = props => {
         leftIcon={{ name: "phone" }}
         containerStyle={{ margin: 20 }}
         leftIconContainerStyle={{ marginLeft: 5, marginRight: 5 }}
-        onChangeText={text => setInput({ ...inputs, born: text })}
+        onChangeText={text => setInput({ ...inputs, phone: text })}
       />
 
       <ActionButton touch={() => onSubmit()} iconName="check" />

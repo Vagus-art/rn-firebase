@@ -26,16 +26,16 @@ const Stock = props => {
   const updateSearch = search => {
     setSearch(search);
   };
-  
+
   //const [filteredStock, setFilteredStock] = useState(props.stock);
 
   //add item/ category menu visibility
   const [AddItemisVisible, toggleItemOverlay] = useState(false);
   const [modifyItemisVisible, toggleModifyItemOverlay] = useState(false);
-  const [modifyItemCategoryisVisible, toggleModifyItemCategoryOverlay] = useState(
-    false
-  );
-
+  const [
+    modifyItemCategoryisVisible,
+    toggleModifyItemCategoryOverlay
+  ] = useState(false);
 
   //modify item/ category menu visibility
   const [AddCategoryisVisible, toggleCategoryOverlay] = useState(false);
@@ -53,41 +53,6 @@ const Stock = props => {
   */
 
   const [currentOption, setCurrentOption] = useState(null);
-
-  /* 
-  Estos arrays definen las opciones de los menus en longpress, de los items y las categorias,
-  title es el titulo del boton, y function es lo que se ejecuta al presionarlos.
-  los arrays son mappeados en el componente, por eso la estructura.
-  */
-
-  const categoryMenu = [
-    {
-      title: "Agregar item",
-      function: () => toggleItemOverlay(!AddItemisVisible)
-    },
-    {
-      title: "Cambiar nombre",
-      function: () => toggleModifyCategoryOverlay(!modifyCategoryisVisible)
-    },
-    {
-      title: "Eliminar categoría",
-      function: ({ title }) => deleteCategory(title)
-    }
-  ];
-  const itemMenu = [
-    {
-      title: "Modificar",
-      function: () => toggleModifyItemOverlay(!modifyItemisVisible)
-    },
-    {
-      title: "Mover a otra categoría",
-      function: () => toggleModifyItemCategoryOverlay(!modifyItemCategoryisVisible)
-    },
-    {
-      title: "Eliminar item",
-      function: () => deleteItem(currentOption.category, currentOption.key)
-    }
-  ];
 
   //estas funciones son las que ejecutan los overlays, son funciones de un rango mas alto para que desde los
   //componentes overlay solo se necesite pasar los estados como argumento, haciendo que sean componentes reusables
@@ -116,12 +81,46 @@ const Stock = props => {
 
   const moveToCategory = destiny => {
     const oldCategory = currentOption.category;
-    const {key, name, quantity} = currentOption;
-    insertToCategory(destiny,{ key, name, quantity });
-    deleteItem(oldCategory,key);
-  }
+    const { key, name, quantity, unit, price } = currentOption;
+    insertToCategory(destiny, { key, name, quantity, unit, price });
+    deleteItem(oldCategory, key);
+  };
 
-  
+  /* 
+  Estos arrays definen las opciones de los menus en longpress, de los items y las categorias,
+  title es el titulo del boton, y function es lo que se ejecuta al presionarlos.
+  los arrays son mappeados en el componente, por eso la estructura.
+  */
+
+  const categoryMenu = [
+    {
+      title: "Agregar item",
+      function: () => toggleItemOverlay(!AddItemisVisible)
+    },
+    {
+      title: "Cambiar nombre",
+      function: () => toggleModifyCategoryOverlay(!modifyCategoryisVisible)
+    },
+    {
+      title: "Eliminar categoría",
+      function: ({ title }) => deleteCategory(title)
+    }
+  ];
+  const itemMenu = [
+    {
+      title: "Modificar",
+      function: () => toggleModifyItemOverlay(!modifyItemisVisible)
+    },
+    {
+      title: "Mover a otra categoría",
+      function: () =>
+        toggleModifyItemCategoryOverlay(!modifyItemCategoryisVisible)
+    },
+    {
+      title: "Eliminar item",
+      function: () => deleteItem(currentOption.category, currentOption.key)
+    }
+  ];
 
   return (
     <View style={styles.main}>
@@ -138,8 +137,12 @@ const Stock = props => {
           renderItem={({ item }) =>
             item.name ? (
               <ListItem
+                bottomDivider
+                topDivider
                 title={item.name}
-                rightTitle={item.quantity}
+                subtitle={item.unit}
+                rightSubtitle={"$"+item.price.toString()}
+                rightTitle={"x"+item.quantity.toString()}
                 contentContainerStyle={{ paddingLeft: 20 }}
                 onLongPress={() => {
                   setCurrentOption(item);
@@ -177,7 +180,7 @@ const Stock = props => {
       {/* MENU DEL ACTION BUTTON */}
       {/* Agregar categoría */}
       <CategoryOverlay
-        label="Agregar categoría"
+        nameLabel="Agregar categoría"
         isVisible={AddCategoryisVisible}
         toggle={toggleCategoryOverlay}
         function={createCategory}
@@ -199,10 +202,10 @@ const Stock = props => {
         isVisible={AddItemisVisible}
         toggle={toggleItemOverlay}
         function={addItem}
-      />  
+      />
       {/* Renombrar categoría */}
       <CategoryOverlay
-        label="Renombrar categoría"
+        nameLabel="Renombrar categoría"
         isVisible={modifyCategoryisVisible}
         toggle={toggleModifyCategoryOverlay}
         function={modifyCategory}
@@ -215,11 +218,11 @@ const Stock = props => {
         menuData={itemMenu}
         option={currentOption}
       />
-      
+
       {/* OPCIONES DEL MENU LONGPRESS DE ITEMS */}
       {/* Modificar item */}
       <ItemOverlay
-        nameLabel="Nuevo nombre"
+        nameLabel="Modificar item"
         option={currentOption}
         quantityLabel="Cantidad"
         isVisible={modifyItemisVisible}
@@ -228,12 +231,11 @@ const Stock = props => {
       />
       {/* Cambiar categoría de item */}
       <CategoryOverlay
-        label="Categoría destino"
+        nameLabel="Cambiar a categoría..."
         isVisible={modifyItemCategoryisVisible}
         toggle={toggleModifyItemCategoryOverlay}
         function={moveToCategory}
       />
-      
     </View>
   );
 };

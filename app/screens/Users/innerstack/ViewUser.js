@@ -21,8 +21,8 @@ const ViewUser = props => {
   };
 
   const onSubmit = () => {
-    const {first,last,born} = inputs;
-    updateUser(item.key,{first,last,born});
+    const {name,adress,phone} = inputs;
+    updateUser(item.key,{name,adress,phone});
     props.navigation.goBack();
   };
 
@@ -39,8 +39,8 @@ const ViewUser = props => {
         leftIcon={{ name: "person" }}
         containerStyle={{ margin: 20 }}
         leftIconContainerStyle={{ marginLeft: 5, marginRight: 5 }}
-        onChangeText={text => setInput({ ...inputs, first: text })}
-        value={inputs.first}
+        onChangeText={text => setInput({ ...inputs, name: text })}
+        value={inputs.name}
         disabled={!editMode}
       />
 
@@ -50,8 +50,8 @@ const ViewUser = props => {
         leftIcon={{ name: "directions-car" }}
         containerStyle={{ margin: 20 }}
         leftIconContainerStyle={{ marginLeft: 5, marginRight: 5 }}
-        onChangeText={text => setInput({ ...inputs, last: text })}
-        value={inputs.last}
+        onChangeText={text => setInput({ ...inputs, adress: text })}
+        value={inputs.adress}
         disabled={!editMode}
       />
 
@@ -61,8 +61,8 @@ const ViewUser = props => {
         leftIcon={{ name: "phone" }}
         containerStyle={{ margin: 20 }}
         leftIconContainerStyle={{ marginLeft: 5, marginRight: 5 }}
-        onChangeText={text => setInput({ ...inputs, born: text })}
-        value={inputs.born}
+        onChangeText={text => setInput({ ...inputs, phone: text })}
+        value={inputs.phone}
         disabled={!editMode}
       />
       <View

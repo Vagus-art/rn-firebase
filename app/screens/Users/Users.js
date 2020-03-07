@@ -30,9 +30,9 @@ const Users = props => {
           data={props.users}
           renderItem={ ({item}) => (
             <PersonTemplate
-              name={item.first}
-              phone={item.born}
-              adress={item.last}
+              name={item.name}
+              phone={item.phone}
+              adress={item.adress}
               key={item.id}
               touch={() => props.navigation.push("ViewUser", {item:item})}
             />

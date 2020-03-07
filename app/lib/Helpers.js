@@ -36,6 +36,8 @@ export const fetchStock = (dir, callback) => {
             category.push({
               name: childitem.name,
               quantity: childitem.quantity,
+              unit: childitem.unit,
+              price: childitem.price,
               category: categoryName,
               key: childitem.key
             });
@@ -47,8 +49,27 @@ export const fetchStock = (dir, callback) => {
     });
 };
 
+export const fetchStockValue = (dir, callback) => {
+  firebase
+    .database()
+    .ref(dir)
+    .on("value", snap => {
+      let moneyCounter = 0;
+      let itemCounter = 0;
+      snap.forEach(category=>{
+        category.forEach(item=>{
+          if(item.val()!=0){
+            moneyCounter+=item.val().price*item.val().quantity;
+            itemCounter+=item.val().quantity;
+          }
+        })
+      });
+      callback({moneyCounter,itemCounter});
+    });
+}
+
 //agrega items del stock a una categoría
-export const pushToCategory = (category, { name, quantity }) => {
+export const pushToCategory = (category, { name, quantity, unit, price }) => {
   const key = firebase
     .database()
     .ref("/rnfirebase/stock/" + category)
@@ -56,15 +77,15 @@ export const pushToCategory = (category, { name, quantity }) => {
   firebase
     .database()
     .ref("rnfirebase/stock/" + category + "/" + key)
-    .update({ name, quantity, key });
+    .update({ name, quantity, unit, price, key });
 };
 
 //inserta item existente a una categoría
-export const insertToCategory = (category, { name, quantity, key }) => {
+export const insertToCategory = (category, { name, quantity, unit, price, key }) => {
   firebase
     .database()
     .ref("/rnfirebase/stock/" + category + "/" + key)
-    .set({ name, quantity, key });
+    .set({ name, quantity, unit, price, key });
 };
 
 //crea una categoria agregando un item vacio a la carpeta
@@ -75,7 +96,7 @@ export const createCategory = category => {
     .set({ void: 0 });
 };
 //agrega un usuario
-export const pushToUsers = ({ first, last, born }) => {
+export const pushToUsers = ({ name, adress, phone }) => {
   const key = firebase
     .database()
     .ref("/rnfirebase/users/")
@@ -83,14 +104,14 @@ export const pushToUsers = ({ first, last, born }) => {
   firebase
     .database()
     .ref("rnfirebase/users/" + key)
-    .update({ first, last, born, key });
+    .update({ name, adress, phone, key });
 };
 
-export const updateUser = (key, { first, last, born }) => {
+export const updateUser = (key, { name, adress, phone }) => {
   firebase
     .database()
     .ref("rnfirebase/users/" + key)
-    .update({ first, last, born });
+    .update({ name, adress, phone });
 };
 
 export const deleteUser = key => {
@@ -107,11 +128,11 @@ export const deleteItem = (category, key) => {
     .remove();
 };
 
-export const updateItem = (category, key, { name, quantity }) => {
+export const updateItem = (category, key, { name, quantity, unit, price }) => {
   firebase
     .database()
     .ref("rnfirebase/stock/" + category + "/" + key)
-    .update({ name, quantity });
+    .update({ name, quantity, unit, price });
 };
 
 export const deleteCategory = category => {
